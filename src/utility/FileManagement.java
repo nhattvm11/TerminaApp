@@ -1,6 +1,7 @@
 package utility;
 
 import java.io.*;
+import java.nio.file.*;
 
 public class FileManagement implements Management{
 
@@ -27,8 +28,18 @@ public class FileManagement implements Management{
     }
 
     @Override
-    public boolean delete(String name) {
-        return false;
+    public boolean delete(String fileName) {
+        Path path = FileSystems.getDefault().getPath(fileName);
+        File file = new File(path.toString());
+        if(file.isDirectory()) {
+            file.listFiles();
+        }
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
